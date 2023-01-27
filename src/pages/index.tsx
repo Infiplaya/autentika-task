@@ -8,6 +8,7 @@ import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { Filter } from "@/components/Filter";
 import { Pagination } from "@/components/Pagination";
+import { CharacterCard } from "@/components/CharacterCard";
 
 export const Main = styled.main`
   padding: 80px 0;
@@ -16,12 +17,6 @@ export const Main = styled.main`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`;
-
-export const Title = styled.h1`
-  font-size: 20px;
-  text-align: center;
-  color: black;
 `;
 
 export const Container = styled.section`
@@ -35,29 +30,10 @@ export const Container = styled.section`
   align-items: center;
 `;
 
-export const CharacterCard = styled.div`
-  margin: 1rem;
-  flex-basis: 45%;
-  padding: 1.5rem;
-  text-align: left;
-  color: inherit;
-  text-decoration: none;
-  border: 1px solid #eaeaea;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-items: center;
-  width: 300px;
-  height: 350px;
-  transition: all 0.15s ease, border-color 0.15s ease;
-
-  &:hover,
-  &:active,
-  &:focus {
-    border: 1px solid #000000;
-    transform: scale(1.05);
-  }
+export const Title = styled.h1`
+  font-size: 20px;
+  text-align: center;
+  color: black;
 `;
 
 export const CharactersGrid = styled.div`
@@ -66,7 +42,7 @@ export const CharactersGrid = styled.div`
   gap: 20px;
   align-items: center;
   justify-items: center;
-  margin-top: 20px;
+  margin-top: 40px;
 
   @media (max-width: 600px) {
     display: flex;
@@ -166,23 +142,7 @@ export default function Home({
           <Filter text={text} handleText={handleText} />
           <CharactersGrid>
             {characters.map((character) => (
-              <Link
-                href={`character/${character.id}`}
-                key={character.id}
-                style={{ textDecoration: "none" }}
-              >
-                <CharacterCard>
-                  <Image
-                    src={character.image}
-                    alt="Character"
-                    width={250}
-                    height={250}
-                    style={{ width: "250px", height: "250px" }}
-                  />
-                  <Title>{character.name}</Title>
-                  <p>More info</p>
-                </CharacterCard>
-              </Link>
+              <CharacterCard character={character} key={character.id} />
             ))}
           </CharactersGrid>
           {characters.length === 0 ? <Title>No matches</Title> : null}

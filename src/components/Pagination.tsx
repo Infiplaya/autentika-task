@@ -11,7 +11,7 @@ export const Button = styled.button`
   &:hover,
   &:active,
   &:focus {
-    border: 1px solid #000000;
+    border: 1px solid #239DA9;
   }
 `;
 

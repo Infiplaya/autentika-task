@@ -3,8 +3,6 @@ import { Inter } from "@next/font/google";
 import { ApolloProvider } from "@apollo/client";
 import client from "@/apollo-client";
 
-import "@/styles/main.css"
-
 const inter = Inter({ subsets: ["latin"] });
 
 export default function App({ Component, pageProps }: AppProps) {
