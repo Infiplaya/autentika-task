@@ -3,12 +3,17 @@ import { Inter } from "@next/font/google";
 import { gql } from "@apollo/client";
 import client from "../apollo-client";
 import Image from "next/image";
+import { Character, Info } from "@/types/characters";
 
 export async function getStaticProps() {
   const { data } = await client.query({
     query: gql`
       query Characters {
         characters {
+          info {
+            next
+            pages
+          }
           results {
             id
             name
@@ -21,21 +26,21 @@ export async function getStaticProps() {
 
   return {
     props: {
-      characters: data.characters.results,
+      firstCharacters: data.characters.results,
+      info: data.characters.info,
     },
   };
 }
 
 const inter = Inter({ subsets: ["latin"] });
 
-interface Character {
-  id: number;
-  name: string;
-  image: string;
-}
-
-export default function Home({ characters }: { characters: Character[] }) {
-  console.log(characters);
+export default function Home({
+  firstCharacters,
+  info,
+}: {
+  firstCharacters: Character[];
+  info: Info;
+}) {
   return (
     <>
       <Head>
@@ -46,7 +51,7 @@ export default function Home({ characters }: { characters: Character[] }) {
       </Head>
       <main>
         <div>
-          {characters.map((character) => (
+          {firstCharacters.map((character) => (
             <div key={character.id}>
               <Image
                 src={character.image}
