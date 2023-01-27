@@ -18,9 +18,11 @@ export const Title = styled.h1`
 export const Container = styled.section`
   min-height: 100vh;
   padding: 0 0.5rem;
+  padding-top: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  justify-items: center;
   align-items: center;
 `;
 
@@ -80,3 +82,18 @@ export const Button = styled.button`
     border: 1px solid #000000;
   }
 `;
+
+export const Input = styled.input`
+margin-top: 20px;
+padding: 10px;
+width: 90%;
+border-radius: 10px;
+font-size: 20px;
+`
+
+export const InputWrapper = styled.div`
+width: 100%;
+display: flex;
+flex-direction: row;
+justify-content: center;
+`

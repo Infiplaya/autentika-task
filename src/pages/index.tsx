@@ -9,11 +9,13 @@ import {
   CharacterCard,
   CharactersGrid,
   Container,
+  Input,
   Main,
   Pagination,
   Title,
 } from "@/styles/styles";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Filter } from "@/components/Filter";
 
 const GET_CHARACTERS = gql`
   query Characters($page: Int, $name: String) {
@@ -59,8 +61,6 @@ export default function Home({
 
   const isNextPage = info.next !== null;
 
-  console.log(isNextPage);
-
   const { data, error } = useQuery(GET_CHARACTERS, {
     client,
     variables: {
@@ -76,8 +76,8 @@ export default function Home({
     }
   }, [data]);
 
-  if (error) {
-    return <div>No more characters</div>;
+  function handleText(e: React.ChangeEvent<HTMLInputElement>) {
+    setText(e.target.value);
   }
 
   return (
@@ -105,14 +105,7 @@ export default function Home({
               Next Page
             </Button>
           </Pagination>
-
-          <div>
-            <input
-              type="text"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-            />
-          </div>
+          <Filter text={text} handleText={handleText} />
           <CharactersGrid>
             {characters.map((character) => (
               <Link
@@ -133,6 +126,7 @@ export default function Home({
               </Link>
             ))}
           </CharactersGrid>
+          {characters.length === 0 ? <Title>No matches</Title> : null}
         </Container>
       </Main>
     </>
