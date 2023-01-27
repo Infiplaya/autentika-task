@@ -14,11 +14,10 @@ import {
   Title,
 } from "@/styles/styles";
 import { useEffect, useState } from "react";
-import styled from "styled-components";
 
 const GET_CHARACTERS = gql`
-  query Characters($page: Int) {
-    characters(page: $page) {
+  query Characters($page: Int, $name: String) {
+    characters(page: $page, filter: { name: $name }) {
       info {
         next
         pages
@@ -41,34 +40,44 @@ export async function getServerSideProps() {
   return {
     props: {
       firstCharacters: data.characters.results,
-      info: data.characters.info,
+      initialInfo: data.characters.info,
     },
   };
 }
 
 export default function Home({
   firstCharacters,
+  initialInfo,
 }: {
   firstCharacters: Character[];
+  initialInfo: Info;
 }) {
   const [characters, setCharacters] = useState(firstCharacters);
+  const [info, setInfo] = useState(initialInfo);
+  const [text, setText] = useState("");
   const [page, setPage] = useState(1);
 
-  const { data, loading, error } = useQuery(GET_CHARACTERS, {
+  const isNextPage = info.next !== null;
+
+  console.log(isNextPage);
+
+  const { data, error } = useQuery(GET_CHARACTERS, {
     client,
     variables: {
       page,
+      name: text,
     },
   });
 
   useEffect(() => {
     if (data) {
       setCharacters(data.characters.results);
+      setInfo(data.characters.info);
     }
   }, [data]);
 
   if (error) {
-    console.error(error);
+    return <div>No more characters</div>;
   }
 
   return (
@@ -89,10 +98,21 @@ export default function Home({
               Previous Page
             </Button>
             <p>{page}</p>
-            <Button onClick={() => setPage((prev) => prev + 1)}>
+            <Button
+              onClick={() => setPage((prev) => prev + 1)}
+              disabled={!isNextPage}
+            >
               Next Page
             </Button>
           </Pagination>
+
+          <div>
+            <input
+              type="text"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+            />
+          </div>
           <CharactersGrid>
             {characters.map((character) => (
               <Link
