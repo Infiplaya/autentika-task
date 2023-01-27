@@ -39,12 +39,12 @@ const CharacterCard = styled.div`
   text-decoration: none;
   border: 1px solid #eaeaea;
   border-radius: 10px;
-  transition: color 0.15s ease, border-color 0.15s ease;
-
-  &hover {
-    color: #0070f3;
-    border-color: #0070f3;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+  width: 300px;
+  height: 300px;
 `;
 
 const CharactersGrid = styled.div`
@@ -108,13 +108,18 @@ export default function Home({
         <Container>
           <CharactersGrid>
             {firstCharacters.map((character) => (
-              <Link href={`character/${character.id}`} key={character.id}>
+              <Link
+                href={`character/${character.id}`}
+                key={character.id}
+                style={{ textDecoration: "none" }}
+              >
                 <CharacterCard>
                   <Image
                     src={character.image}
                     alt="Character"
                     width={250}
                     height={250}
+                    style={{ width: "250px", height: "250px" }}
                   />
                   <Title>{character.name}</Title>
                 </CharacterCard>
