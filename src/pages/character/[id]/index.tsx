@@ -67,11 +67,11 @@ export default function CharacterPage({
 
           <InfoSection>
             <div>
-              <h3>Status:</h3>
+              <h3>Gender:</h3>
               <p>{character.gender}</p>
             </div>
             <div>
-              <h3>Species</h3>
+              <h3>Status</h3>
               <p>{character.status}</p>
             </div>
             <div>
