@@ -54,7 +54,6 @@ export default function CharacterPage({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Main>
         <CharacterGrid>
           <CharacterProfile>
             <Image
@@ -67,40 +66,72 @@ export default function CharacterPage({
           </CharacterProfile>
 
           <InfoSection>
-            <h3>Status:</h3>
-            <p>{character.gender}</p>
-            <h3>Species</h3>
-            <p>{character.status}</p>
-            <h3>Species</h3>
-            <p>{character.species}</p>
-            <h3>List of episodes</h3>
-            {character.episode.map((episode) => episode.episode).join(", ")}
-            <h3>Current Dimension</h3>
-            <p>{character.location.dimension}</p>
-            <h3>Original dimension</h3>
-            <p>{character.origin.dimension}</p>
+            <div>
+              <h3>Status:</h3>
+              <p>{character.gender}</p>
+            </div>
+            <div>
+              <h3>Species</h3>
+              <p>{character.status}</p>
+            </div>
+            <div>
+              <h3>Species</h3>
+              <p>{character.species}</p>
+            </div>
+            <div>
+              <h3>List of episodes</h3>
+              <Episodes>
+                {character.episode.map((episode) => episode.episode).join(", ")}
+              </Episodes>
+            </div>
+            <div>
+              <h3>Current Dimension</h3>
+              <p>{character.location.dimension}</p>
+            </div>
+            <div>
+              <h3>Original dimension</h3>
+              <p>{character.origin.dimension}</p>
+            </div>
           </InfoSection>
         </CharacterGrid>
-      </Main>
     </>
   );
 }
 
 const CharacterGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   padding: 20px;
-  align-items: center;
   justify-content: center;
+  gap: 40px;
+
+  @media (max-width: 600px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    width: 100%;
+  }
 `;
 
 const InfoSection = styled.section`
-  grid-column: 7 / span 12;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
 
 const CharacterProfile = styled.section`
-  grid-column: 1 / span 6;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 20px;
+`;
+
+const Episodes = styled.div`
+  width: 33%;
+
+  @media (max-width: 600px) {
+    width: 100%;
+  }
 `;
