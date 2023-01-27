@@ -4,6 +4,63 @@ import { gql } from "@apollo/client";
 import client from "../apollo-client";
 import Image from "next/image";
 import { Character, Info } from "@/types/characters";
+import styled from "styled-components";
+
+const Main = styled.main`
+  padding: 5rem 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Title = styled.h1`
+  font-size: 1.5em;
+  text-align: center;
+  color: black;
+`;
+
+const Container = styled.section`
+  min-height: 100vh;
+  padding: 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const CharacterCard = styled.div`
+  margin: 1rem;
+  flex-basis: 45%;
+  padding: 1.5rem;
+  text-align: left;
+  color: inherit;
+  text-decoration: none;
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+
+  &hover {
+    color: #0070f3;
+    border-color: #0070f3;
+  }
+`;
+
+const CharactersGrid = styled.div`
+  display: grid;
+  grid-template-columns: 50% 50%;
+  gap: 20px;
+  align-items: center;
+  justify-items: center;
+
+  @media (max-width: 600px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+`;
 
 export async function getStaticProps() {
   const { data } = await client.query({
@@ -49,21 +106,23 @@ export default function Home({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <div>
-          {firstCharacters.map((character) => (
-            <div key={character.id}>
-              <Image
-                src={character.image}
-                alt="Character"
-                width={250}
-                height={250}
-              />
-              <p>{character.name}</p>
-            </div>
-          ))}
-        </div>
-      </main>
+      <Main>
+        <Container>
+          <CharactersGrid>
+            {firstCharacters.map((character) => (
+              <CharacterCard key={character.id}>
+                <Image
+                  src={character.image}
+                  alt="Character"
+                  width={250}
+                  height={250}
+                />
+                <Title>{character.name}</Title>
+              </CharacterCard>
+            ))}
+          </CharactersGrid>
+        </Container>
+      </Main>
     </>
   );
 }
