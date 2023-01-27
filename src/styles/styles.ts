@@ -63,7 +63,7 @@ export const CharactersGrid = styled.div`
   }
 `;
 
-export const Pagination = styled.div`
+export const StyledPagination = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;

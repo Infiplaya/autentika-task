@@ -11,11 +11,11 @@ import {
   Container,
   Input,
   Main,
-  Pagination,
   Title,
 } from "@/styles/styles";
 import React, { useEffect, useState } from "react";
 import { Filter } from "@/components/Filter";
+import { Pagination } from "@/components/Pagination";
 
 const GET_CHARACTERS = gql`
   query Characters($page: Int, $name: String) {
@@ -80,6 +80,14 @@ export default function Home({
     setText(e.target.value);
   }
 
+  function handlePreviousPage() {
+    setPage((prev) => prev - 1);
+  }
+
+  function handleNextPage() {
+    setPage((prev) => prev + 1);
+  }
+
   return (
     <>
       <Head>
@@ -90,21 +98,12 @@ export default function Home({
       </Head>
       <Main>
         <Container>
-          <Pagination>
-            <Button
-              onClick={() => setPage((prev) => prev - 1)}
-              disabled={page < 2 ? true : false}
-            >
-              Previous Page
-            </Button>
-            <p>{page}</p>
-            <Button
-              onClick={() => setPage((prev) => prev + 1)}
-              disabled={!isNextPage}
-            >
-              Next Page
-            </Button>
-          </Pagination>
+          <Pagination
+            isNextPage={isNextPage}
+            handleNextPage={handleNextPage}
+            handlePreviousPage={handlePreviousPage}
+            page={page}
+          />
           <Filter text={text} handleText={handleText} />
           <CharactersGrid>
             {characters.map((character) => (
