@@ -4,6 +4,7 @@ import client from "@/apollo-client";
 import Image from "next/image";
 import { Character, Info } from "@/types/characters";
 import styled from "styled-components";
+import Link from "next/link";
 
 const Main = styled.main`
   padding: 5rem 0;
@@ -107,15 +108,17 @@ export default function Home({
         <Container>
           <CharactersGrid>
             {firstCharacters.map((character) => (
-              <CharacterCard key={character.id}>
-                <Image
-                  src={character.image}
-                  alt="Character"
-                  width={250}
-                  height={250}
-                />
-                <Title>{character.name}</Title>
-              </CharacterCard>
+              <Link href={`character/${character.id}`} key={character.id}>
+                <CharacterCard>
+                  <Image
+                    src={character.image}
+                    alt="Character"
+                    width={250}
+                    height={250}
+                  />
+                  <Title>{character.name}</Title>
+                </CharacterCard>
+              </Link>
             ))}
           </CharactersGrid>
         </Container>

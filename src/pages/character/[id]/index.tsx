@@ -4,6 +4,7 @@ import client from "@/apollo-client";
 import { Character, Info } from "@/types/characters";
 import styled from "styled-components";
 import { GetServerSideProps } from "next";
+import Image from "next/image";
 
 const Main = styled.main`
   padding: 5rem 0;
@@ -46,7 +47,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
   return {
     props: {
-      character: data,
+      character: data.character,
     },
   };
 };
@@ -55,14 +56,20 @@ export default function CharacterPage({ character }: { character: Character }) {
   return (
     <>
       <Head>
-        <title>Autentika Task</title>
+        <title>{character.name}</title>
         <meta name="description" content="Autentika task app" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Main>
         <Container>
-            
+          <Image
+            src={character.image}
+            alt="Character"
+            width={250}
+            height={250}
+          />
+          <Title>{character.name}</Title>
         </Container>
       </Main>
     </>
