@@ -121,6 +121,7 @@ export default function Home({
                     style={{ width: "250px", height: "250px" }}
                   />
                   <Title>{character.name}</Title>
+                  <p>More info</p>
                 </CharacterCard>
               </Link>
             ))}

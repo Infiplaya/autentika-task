@@ -1,34 +1,11 @@
 import Head from "next/head";
 import { gql } from "@apollo/client";
 import client from "@/apollo-client";
-import { Character } from "@/types/characters";
 import styled from "styled-components";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
-
-const Main = styled.main`
-  padding: 5rem 0;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Title = styled.h1`
-  font-size: 1.5em;
-  text-align: center;
-  color: black;
-`;
-
-const Container = styled.section`
-  min-height: 100vh;
-  padding: 0 0.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
+import { SelectedCharacter } from "@/types/specificCharacter";
+import { Container, Main, Title } from "@/styles/styles";
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { id } = query;
@@ -39,6 +16,18 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
           id
           name
           image
+          gender
+          episode {
+            episode
+          }
+          status
+          location {
+            dimension
+          }
+          origin {
+            dimension
+          }
+          species
         }
       }
     `,
@@ -52,7 +41,11 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   };
 };
 
-export default function CharacterPage({ character }: { character: Character }) {
+export default function CharacterPage({
+  character,
+}: {
+  character: SelectedCharacter;
+}) {
   return (
     <>
       <Head>
@@ -62,16 +55,52 @@ export default function CharacterPage({ character }: { character: Character }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Main>
-        <Container>
-          <Image
-            src={character.image}
-            alt="Character"
-            width={250}
-            height={250}
-          />
-          <Title>{character.name}</Title>
-        </Container>
+        <CharacterGrid>
+          <CharacterProfile>
+            <Image
+              src={character.image}
+              alt="Character"
+              width={400}
+              height={400}
+            />
+            <Title>{character.name}</Title>
+          </CharacterProfile>
+
+          <InfoSection>
+            <h3>Status:</h3>
+            <p>{character.gender}</p>
+            <h3>Species</h3>
+            <p>{character.status}</p>
+            <h3>Species</h3>
+            <p>{character.species}</p>
+            <h3>List of episodes</h3>
+            {character.episode.map((episode) => episode.episode).join(", ")}
+            <h3>Current Dimension</h3>
+            <p>{character.location.dimension}</p>
+            <h3>Original dimension</h3>
+            <p>{character.origin.dimension}</p>
+          </InfoSection>
+        </CharacterGrid>
       </Main>
     </>
   );
 }
+
+const CharacterGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
+`;
+
+const InfoSection = styled.section`
+  grid-column: 7 / span 12;
+`;
+
+const CharacterProfile = styled.section`
+  grid-column: 1 / span 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;

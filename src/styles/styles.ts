@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Main = styled.main`
-  padding: 5rem 0;
+  padding: 80px 0;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -10,14 +10,14 @@ export const Main = styled.main`
 `;
 
 export const Title = styled.h1`
-  font-size: 1.5em;
+  font-size: 20px;
   text-align: center;
   color: black;
 `;
 
 export const Container = styled.section`
   min-height: 100vh;
-  padding: 0 0.5rem;
+  padding: 0 8px;
   padding-top: 20px;
   display: flex;
   flex-direction: column;
@@ -41,9 +41,13 @@ export const CharacterCard = styled.div`
   justify-items: center;
   width: 300px;
   height: 350px;
+  transition: all 0.15s ease, border-color 0.15s ease;
 
-  &:hover {
+  &:hover, 
+  &:active,
+  &:focus {
     border: 1px solid #000000;
+    transform: scale(1.05);
   }
 `;
 
@@ -77,8 +81,11 @@ export const Button = styled.button`
   border-radius: 10px;
   cursor: pointer;
   border: 1px solid #eaeaea;
+  transition: all 0.15s ease, border-color 0.15s ease;
 
-  &:hover {
+  &:hover, 
+  &:active,
+  &:focus {
     border: 1px solid #000000;
   }
 `;
