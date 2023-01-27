@@ -1,7 +1,6 @@
 import Head from "next/head";
-import { Inter } from "@next/font/google";
 import { gql } from "@apollo/client";
-import client from "../apollo-client";
+import client from "@/apollo-client";
 import Image from "next/image";
 import { Character, Info } from "@/types/characters";
 import styled from "styled-components";
@@ -62,7 +61,7 @@ const CharactersGrid = styled.div`
   }
 `;
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const { data } = await client.query({
     query: gql`
       query Characters {
@@ -88,8 +87,6 @@ export async function getStaticProps() {
     },
   };
 }
-
-const inter = Inter({ subsets: ["latin"] });
 
 export default function Home({
   firstCharacters,
