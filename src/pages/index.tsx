@@ -1,84 +1,41 @@
 import Head from "next/head";
-import { gql } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import client from "@/apollo-client";
 import Image from "next/image";
 import { Character, Info } from "@/types/characters";
-import styled from "styled-components";
 import Link from "next/link";
+import {
+  Button,
+  CharacterCard,
+  CharactersGrid,
+  Container,
+  Main,
+  Pagination,
+  Title,
+} from "@/styles/styles";
+import { useEffect, useState } from "react";
+import styled from "styled-components";
 
-const Main = styled.main`
-  padding: 5rem 0;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Title = styled.h1`
-  font-size: 1.5em;
-  text-align: center;
-  color: black;
-`;
-
-const Container = styled.section`
-  min-height: 100vh;
-  padding: 0 0.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const CharacterCard = styled.div`
-  margin: 1rem;
-  flex-basis: 45%;
-  padding: 1.5rem;
-  text-align: left;
-  color: inherit;
-  text-decoration: none;
-  border: 1px solid #eaeaea;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-items: center;
-  width: 300px;
-  height: 300px;
-`;
-
-const CharactersGrid = styled.div`
-  display: grid;
-  grid-template-columns: 50% 50%;
-  gap: 20px;
-  align-items: center;
-  justify-items: center;
-
-  @media (max-width: 600px) {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
+const GET_CHARACTERS = gql`
+  query Characters($page: Int) {
+    characters(page: $page) {
+      info {
+        next
+        pages
+      }
+      results {
+        id
+        name
+        image
+      }
+    }
   }
 `;
 
 export async function getServerSideProps() {
   const { data } = await client.query({
-    query: gql`
-      query Characters {
-        characters {
-          info {
-            next
-            pages
-          }
-          results {
-            id
-            name
-            image
-          }
-        }
-      }
-    `,
+    query: GET_CHARACTERS,
+    variables: { page: 1 },
   });
 
   return {
@@ -91,11 +48,29 @@ export async function getServerSideProps() {
 
 export default function Home({
   firstCharacters,
-  info,
 }: {
   firstCharacters: Character[];
-  info: Info;
 }) {
+  const [characters, setCharacters] = useState(firstCharacters);
+  const [page, setPage] = useState(1);
+
+  const { data, loading, error } = useQuery(GET_CHARACTERS, {
+    client,
+    variables: {
+      page,
+    },
+  });
+
+  useEffect(() => {
+    if (data) {
+      setCharacters(data.characters.results);
+    }
+  }, [data]);
+
+  if (error) {
+    console.error(error);
+  }
+
   return (
     <>
       <Head>
@@ -106,8 +81,20 @@ export default function Home({
       </Head>
       <Main>
         <Container>
+          <Pagination>
+            <Button
+              onClick={() => setPage((prev) => prev - 1)}
+              disabled={page < 2 ? true : false}
+            >
+              Previous Page
+            </Button>
+            <p>{page}</p>
+            <Button onClick={() => setPage((prev) => prev + 1)}>
+              Next Page
+            </Button>
+          </Pagination>
           <CharactersGrid>
-            {firstCharacters.map((character) => (
+            {characters.map((character) => (
               <Link
                 href={`character/${character.id}`}
                 key={character.id}

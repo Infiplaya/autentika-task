@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { gql } from "@apollo/client";
 import client from "@/apollo-client";
-import { Character, Info } from "@/types/characters";
+import { Character } from "@/types/characters";
 import styled from "styled-components";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
