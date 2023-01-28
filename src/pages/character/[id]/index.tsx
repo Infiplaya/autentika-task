@@ -54,12 +54,13 @@ const CharacterGrid = styled.div`
   justify-content: center;
   gap: 40px;
 
-  @media (max-width: 600px) {
+  @media (max-width: 1024px) {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 0;
     width: 100%;
+    gap: 0;
   }
 `;
 
@@ -68,6 +69,10 @@ const InfoSection = styled.section`
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+  @media (max-width: 1024px) {
+    padding-top: 0;
+  }
 `;
 
 const CharacterProfile = styled.section`
@@ -75,12 +80,16 @@ const CharacterProfile = styled.section`
   flex-direction: column;
   align-items: center;
   padding: 20px;
+
+  @media (max-width: 1024px) {
+    padding-bottom: 0;
+  }
 `;
 
 const Episodes = styled.div`
-  width: 33%;
+  width: 50%;
 
-  @media (max-width: 600px) {
+  @media (max-width: 1024px) {
     width: 100%;
   }
 `;
