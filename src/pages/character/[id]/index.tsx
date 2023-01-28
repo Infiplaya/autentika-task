@@ -4,17 +4,22 @@ import styled from "styled-components";
 import { GetStaticProps } from "next";
 import Image from "next/image";
 import { SelectedCharacter } from "@/types/specificCharacter";
-import { Data } from "@/types/characters";
+import { Character, Data } from "@/types/characters";
 import { GET_CHARACTERS } from "@/graphql/getCharacters";
 import { GET_SPECIFIC_CHARACTER } from "@/graphql/getSpecificCharacter";
 
 export const getStaticPaths = async () => {
-  const { data }: { data: Data } = await client.query({
-    query: GET_CHARACTERS,
-    variables: { page: 1 },
-  });
+  let allData: Array<Character> = [];
+  for (let page = 1; page <= 42; page++) {
+    const { data }: { data: Data } = await client.query({
+      query: GET_CHARACTERS,
+      variables: { page },
+    });
+    // concatenate the data from this page to the existing data
+    allData = allData.concat(data.characters.results);
+  }
 
-  const characters = data.characters.results;
+  const characters = allData;
 
   const paths = characters.map((character) => ({
     params: { id: character.id },
