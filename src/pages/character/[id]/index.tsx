@@ -1,36 +1,32 @@
 import Head from "next/head";
-import { gql } from "@apollo/client";
 import client from "@/apollo-client";
 import styled from "styled-components";
-import { GetServerSideProps } from "next";
+import { GetStaticProps } from "next";
 import Image from "next/image";
 import { SelectedCharacter } from "@/types/specificCharacter";
+import { Data } from "@/types/characters";
+import { GET_CHARACTERS } from "@/graphql/getCharacters";
+import { GET_SPECIFIC_CHARACTER } from "@/graphql/getSpecificCharacter";
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { id } = query;
+export const getStaticPaths = async () => {
+  const { data }: { data: Data } = await client.query({
+    query: GET_CHARACTERS,
+    variables: { page: 1 },
+  });
+
+  const characters = data.characters.results;
+
+  const paths = characters.map((character) => ({
+    params: { id: character.id },
+  }));
+
+  return { paths, fallback: false };
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { data } = await client.query({
-    query: gql`
-      query Character($characterId: ID!) {
-        character(id: $characterId) {
-          id
-          name
-          image
-          gender
-          episode {
-            episode
-          }
-          status
-          location {
-            dimension
-          }
-          origin {
-            dimension
-          }
-          species
-        }
-      }
-    `,
-    variables: { characterId: id },
+    query: GET_SPECIFIC_CHARACTER,
+    variables: { characterId: params?.id },
   });
 
   return {

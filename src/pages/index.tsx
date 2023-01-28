@@ -1,14 +1,14 @@
 import Head from "next/head";
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import client from "@/apollo-client";
-import Image from "next/image";
 import { Character, Info } from "@/types/characters";
-import Link from "next/link";
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { Filter } from "@/components/Filter";
 import { Pagination } from "@/components/Pagination";
 import { CharacterCard } from "@/components/CharacterCard";
+import { GetStaticProps } from "next";
+import { GET_CHARACTERS } from "@/graphql/getCharacters";
 
 export const Main = styled.main`
   padding: 80px 0;
@@ -52,23 +52,9 @@ export const CharactersGrid = styled.div`
   }
 `;
 
-const GET_CHARACTERS = gql`
-  query Characters($page: Int, $name: String) {
-    characters(page: $page, filter: { name: $name }) {
-      info {
-        next
-        pages
-      }
-      results {
-        id
-        name
-        image
-      }
-    }
-  }
-`;
 
-export async function getServerSideProps() {
+
+export const getStaticProps:GetStaticProps = async () => {
   const { data } = await client.query({
     query: GET_CHARACTERS,
     variables: { page: 1 },
@@ -80,7 +66,7 @@ export async function getServerSideProps() {
       initialInfo: data.characters.info,
     },
   };
-}
+};
 
 export default function Home({
   firstCharacters,

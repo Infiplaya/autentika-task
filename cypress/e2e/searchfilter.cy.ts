@@ -11,3 +11,5 @@ describe('Filter search', () => {
     cy.get('[href="/character/18"] > .sc-ipEyDJ > .sc-jrcTuL').should("be.visible")
   })
 })
+
+export {}

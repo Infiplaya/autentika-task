@@ -13,3 +13,5 @@ describe('Pagination', () => {
     cy.get('.sc-eDWCr > p').invoke("text").should("equal", "1")
   })
 })
+
+export {}

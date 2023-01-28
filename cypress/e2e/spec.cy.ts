@@ -10,3 +10,5 @@ describe('Navigation', () => {
     cy.url().should("include", "/character/11")
   })
 })
+
+export {}
