@@ -23,7 +23,7 @@ export const StyledCharacterCard = styled.div`
   &:hover,
   &:active,
   &:focus {
-    border: 1px solid #239DA9;
+    border: 1px solid #239da9;
     transform: scale(1.05);
   }
 `;
@@ -32,6 +32,10 @@ export const Title = styled.h1`
   font-size: 20px;
   text-align: center;
   color: black;
+`;
+
+const InfoText = styled.p`
+  color: gray;
 `;
 
 interface Props {
@@ -50,7 +54,7 @@ export function CharacterCard({ character }: Props) {
           style={{ width: "250px", height: "250px" }}
         />
         <Title>{character.name}</Title>
-        <p style={{color: "gray"}}>More info</p>
+        <InfoText>More info</InfoText>
       </StyledCharacterCard>
     </Link>
   );
