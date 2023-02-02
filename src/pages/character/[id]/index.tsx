@@ -3,7 +3,7 @@ import client from "@/apollo-client";
 import styled from "styled-components";
 import { GetStaticProps } from "next";
 import Image from "next/image";
-import { SelectedCharacter } from "@/types/specificCharacter";
+import { CharacterData, SelectedCharacter } from "@/types/specificCharacter";
 import { Character, Data } from "@/types/characters";
 import { GET_CHARACTERS } from "@/graphql/getCharacters";
 import { GET_SPECIFIC_CHARACTER } from "@/graphql/getSpecificCharacter";
@@ -34,7 +34,7 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const { data } = await client.query({
+  const { data }: { data: CharacterData } = await client.query({
     query: GET_SPECIFIC_CHARACTER,
     variables: { characterId: params?.id },
   });

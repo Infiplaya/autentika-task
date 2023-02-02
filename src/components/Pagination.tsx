@@ -38,7 +38,7 @@ export function Pagination({
 }: Props) {
   return (
     <StyledPagination>
-      <Button onClick={handlePreviousPage} disabled={page < 2 ? true : false}>
+      <Button onClick={handlePreviousPage} disabled={page < 2}>
         Previous Page
       </Button>
       <p>{page}</p>

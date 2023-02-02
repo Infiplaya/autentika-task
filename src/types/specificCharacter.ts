@@ -1,8 +1,8 @@
 export interface CharacterData {
-    data: Data;
+    data: CharacterData;
 }
 
-export interface Data {
+export interface CharacterData {
     character: SelectedCharacter;
 }
 
