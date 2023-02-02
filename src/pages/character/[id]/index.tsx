@@ -7,25 +7,30 @@ import { SelectedCharacter } from "@/types/specificCharacter";
 import { Character, Data } from "@/types/characters";
 import { GET_CHARACTERS } from "@/graphql/getCharacters";
 import { GET_SPECIFIC_CHARACTER } from "@/graphql/getSpecificCharacter";
+import { GET_NUMBER_OF_PAGES } from "@/graphql/getNumberOfPages";
 
 export const getStaticPaths = async () => {
-  let allData: Array<Character> = [];
-  for (let page = 1; page <= 42; page++) {
+  // Get the data about number of total pages
+  const { data }: { data: Data } = await client.query({
+    query: GET_NUMBER_OF_PAGES,
+  });
+
+  const NUMBER_OF_PAGES = data.characters.info.pages;
+
+  let allCharacters: Array<Character> = [];
+  for (let page = 1; page <= NUMBER_OF_PAGES; page++) {
     const { data }: { data: Data } = await client.query({
       query: GET_CHARACTERS,
       variables: { page },
     });
     // concatenate the data from this page to the existing data
-    allData = allData.concat(data.characters.results);
+    allCharacters = allCharacters.concat(data.characters.results);
   }
-
-  const characters = allData;
-
-  const paths = characters.map((character) => ({
+  const paths = allCharacters.map((character) => ({
     params: { id: character.id },
   }));
 
-  return { paths, fallback: false };
+  return { paths, fallback: "blocking" };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
