@@ -9,7 +9,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <main className={inter.className}>
       <ApolloProvider client={client}>
-        <Component {...pageProps} />;
+        <Component {...pageProps} />
       </ApolloProvider>
     </main>
   );
