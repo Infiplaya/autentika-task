@@ -82,7 +82,7 @@ export default function Home({
 
   const isNextPage = info.next !== null;
 
-  const { data } = useQuery(GET_CHARACTERS, {
+  const { data } = useQuery<Data>(GET_CHARACTERS, {
     client,
     variables: {
       page,
