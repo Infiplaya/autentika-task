@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useQuery } from "@apollo/client";
 import client from "@/apollo-client";
-import { Character, Info } from "@/types/characters";
+import { Character, Data, Info } from "@/types/characters";
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { Filter } from "@/components/Filter";
@@ -55,7 +55,7 @@ export const CharactersGrid = styled.div`
 
 
 export const getStaticProps:GetStaticProps = async () => {
-  const { data } = await client.query({
+  const { data }: { data: Data} = await client.query({
     query: GET_CHARACTERS,
     variables: { page: 1 },
   });
